@@ -47,13 +47,30 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
 
-      success: true,
+  success: true,
 
-      reference,
+  reference,
 
-      data: response.data
+  requestSent: {
 
-    });
+    email:
+      `${customerId}@nextel.app`,
+
+    firstName:
+      "Registrant",
+
+    lastName:
+      customerId.slice(-6),
+
+    phone:
+      "09000000000"
+
+  },
+
+  aspfiyResponse:
+    response.data
+
+});
 
   } catch (error) {
 
