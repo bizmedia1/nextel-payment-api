@@ -33,7 +33,7 @@ if (req.method !== "POST") {
             customerId.slice(-6),
 
           webhookUrl:
-            "https://YOUR-VERCEL-DOMAIN.vercel.app/api/webhook",
+            "https://nextel-payment-api.vercel.app/api/webhook",
 
           phone:
             "09000000000"
