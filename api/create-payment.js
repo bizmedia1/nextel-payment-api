@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     const response =
       await axios.post(
 
-        "https://api-v1.aspfiy.com/reserve-palmpay/",
+        "https://api-v1.aspfiy.com/reserve-paga/",
 
         {
           email:
