@@ -1,8 +1,4 @@
-import axios from "axios";
-
 export default async function handler(req, res) {
-
-  /* CORS */
 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -21,91 +17,63 @@ export default async function handler(req, res) {
 
   try {
 
+    const {
+      firstName,
+      lastName,
+      email,
+      phone
+    } = req.body;
+
     const reference =
-      "NEXTEL-" + Date.now();
+      "NEXTEL_" +
+      Date.now() +
+      "_" +
+      Math.floor(Math.random() * 100000);
 
-    const customerId =
-      Date.now().toString();
-
-    const response =
-      await axios.post(
-
-        "https://api-v1.aspfiy.com/reserve-paga/",
-
-        {
-          email:
-            `${customerId}@nextel.app`,
+    const response = await fetch(
+      "https://api-v1.aspfiy.com/reserve-paga/",
+      {
+        method: "POST",
+        headers: {
+          Authorization:
+            `Bearer ${process.env.ASPFIY_SECRET_KEY}`,
+          "Content-Type":
+            "application/json",
+          accept:
+            "application/json"
+        },
+        body: JSON.stringify({
 
           reference,
 
-          firstName:
-            "Registrant",
+          firstName,
 
-          lastName:
-            customerId.slice(-6),
+          lastName,
+
+          email,
+
+          phone,
 
           webhookUrl:
-            "https://nextel-payment-api.vercel.app/api/webhook",
+            "https://nextel-payment-api.vercel.app/api/webhook"
 
-          phone:
-            "09000000000"
-        },
+        })
+      }
+    );
 
-        {
-          headers: {
+    const data =
+      await response.json();
 
-            Authorization:
-              `Bearer ${process.env.ASPFIY_SECRET_KEY}`,
-
-            "Content-Type":
-              "application/json",
-
-            accept:
-              "application/json"
-
-          }
-        }
-      );
-
-    return res.status(200).json({
-
-      success: true,
-
-      reference,
-
-      requestSent: {
-
-        email:
-          `${customerId}@nextel.app`,
-
-        firstName:
-          "Registrant",
-
-        lastName:
-          customerId.slice(-6),
-
-        phone:
-          "09000000000"
-
-      },
-
-      aspfiyResponse:
-        response.data
-
-    });
+    return res.status(200).json(data);
 
   } catch (error) {
-
-    console.log(
-      error.response?.data || error.message
-    );
 
     return res.status(500).json({
 
       success: false,
 
       error:
-        error.response?.data || error.message
+        error.message
 
     });
 
