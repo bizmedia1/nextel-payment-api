@@ -20,6 +20,10 @@ export default async function handler(req, res) {
 
     const payload = req.body;
 
+    console.log(
+      JSON.stringify(payload, null, 2)
+    );
+
     if (
       payload.event === "PAYMENT_NOTIFIFICATION" ||
       payload.event === "PAYMENT_NOTIFICATION"
